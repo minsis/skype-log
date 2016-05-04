@@ -2,6 +2,7 @@ import sqlite3
 from platform import system
 from os.path import exists
 from os import environ
+import ErrHandle as ErrHandle
 
 class Skypper:
 
@@ -10,20 +11,13 @@ class Skypper:
         self.home_dir = environ["HOME"]
         self.default_skype_folders = ["DataRv", "shared_dynco", "shared_httpfe"]
 
-        try:
-            if skype_path is not None:
-                self.skype_path = skype_path
+        if skype_path is not None:
+            self.skype_path = skype_path
+        elif self.os_platform == "Linux":
+            self.skype_path = home_dir + "/.Skype/"
+        elif self.os_platform == "Windows":
+            self.skype_path = environ["APPDATA"] + "\\Skype\\"
+        else:
+            if exists(self.skype_path): pass
 
-                if exists(self.skype_path): pass
-            elif os_platform == "Linux":
-                self.skype_path = home_dir + "/.Skype/"
-
-                if exists(self.skype_path): pass
-            elif os_platform == "Windows":
-                self.skype_path = "%AppData%\Skype\\"
-
-                if exists(self.skype_path): pass
-            else:
-                if exists(self.skype_path): pass
-        except:
-            raise ValueError("Unable to determin Skype path, you can override by passing the path of Skype")
+        if not exists(self.skype_path): ErrHandle.no_path()
