@@ -5,4 +5,7 @@ def no_database():
     raise ValueError("Unable to determin Skype database path")
 
 def no_user_path():
+    raise ValueError("Unable to determin Skype user(s) path")
+
+def no_user():
     raise ValueError("Unable to determin Skype user(s)")
